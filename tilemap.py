@@ -14,4 +14,4 @@ class Tilemap:
         for rect in self.rects:
             pg.draw.rect(surface, 0xa0a0a0, world_to_screen_rect(rect))
 
-        pg.draw.rect(surface, 0x00ff00, world_to_screen_rect(player.Rect), 2)
+        player.draw(surface, world_to_screen_rect)
