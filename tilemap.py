@@ -1,5 +1,6 @@
 import pygame as pg
 import json
+from spritesheet import Sprite
 
 def load_json(filename):
     with open(filename, 'r') as f:
@@ -11,17 +12,35 @@ def get_obj(instance, find):
         if inst["__identifier"] == find:
             return inst
 
+def get_tile_layer(layer_instance, layer, csv_map, size, sprite):
+    map_surface = pg.Surface((csv_map["__cWid"]*size, csv_map["__cHei"]*size))
+    map_surface.set_colorkey((0, 0, 0))
+    layer = get_obj(layer_instance, layer)
+	# incoming data format
+	# { "px": [0,0], "src": [64,64], "f": 0, "t": 132, "d": [0] },
+    for tile in layer["gridTiles"]:
+        s = sprite.get_sprite(tile["src"], size)
+        map_surface.blit(pg.transform.flip(s, tile["f"], 0), (tile["px"][0], tile["px"][1]))
+
+    return map_surface
+
+
 class Tilemap:
     def __init__(self):
         self.rects = []
 
         self.map = load_json("map/map.ldtk")
-        self.layer_instance = self.map["levels"][0]["layerInstances"]
-
-        csv_map = get_obj(self.layer_instance, "Grid_set")
+        layer_instance = self.map["levels"][0]["layerInstances"]
+        self.spriteSheet = Sprite("map/map.png")
+        csv_map = get_obj(layer_instance, "Grid_set")
         size = csv_map["__gridSize"]
 
-        self.map_surface = pg.Surface((csv_map["__cWid"]*size, csv_map["__cHei"]*size))
+        self.player_pos = get_obj(layer_instance, "Player")["entityInstances"][0]["px"]
+
+        self.layerTiles = get_tile_layer(layer_instance, "Tiles", csv_map, size, self.spriteSheet)
+        self.layerAssets = get_tile_layer(layer_instance, "Assets", csv_map, size, self.spriteSheet)
+        self.layerTrees = get_tile_layer(layer_instance, "Trees", csv_map, size, self.spriteSheet)
+        self.layerBackground = get_tile_layer(layer_instance, "Background", csv_map, size, self.spriteSheet)
 
         x = y = 0
         for block in csv_map["intGridCsv"]:
@@ -38,7 +57,10 @@ class Tilemap:
         self.rects.extend(rects)
 
     def draw(self, surface, player, world_to_screen_rect):
-        for rect in self.rects:
-            pg.draw.rect(surface, (0, 0, 0), world_to_screen_rect(rect))
-
+        # for rect in self.rects:
+        #     pg.draw.rect(surface, (0, 0, 0), world_to_screen_rect(rect))
+        surface.blit(self.layerBackground, (0, 0))
         pg.draw.rect(surface, 0x00ff00, world_to_screen_rect(player.Rect), 2)
+        surface.blit(self.layerTiles, (0, 0))
+        surface.blit(self.layerTrees, (0, 0))
+        surface.blit(self.layerAssets, (0, 0))
