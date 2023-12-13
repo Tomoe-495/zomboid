@@ -15,8 +15,10 @@ def main():
     screen = pg.display.set_mode(c.SCREEN_SIZE)
     clock = pg.time.Clock()
 
+    tilemap = Tilemap()
+
     player = Player(
-        (500, 200, 20, 50),
+        (tilemap.player_pos[0], tilemap.player_pos[1], 20, 50),
         c.PHYS_WALK_SPEED,
         c.PHYS_RUN_SPEED,
         c.PHYS_JUMP_POWER,
@@ -25,7 +27,6 @@ def main():
     
     camera = Camera(c.SCREEN_SIZE)
     
-    tilemap = Tilemap()
 
     player.set_collisionmap(tilemap)
 
