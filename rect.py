@@ -18,16 +18,25 @@ class Rect:
         return round(self.x + self.w, 15)    # Rounding because of floating point precision error causing bad collision detection
 
     @property
-    def Down(self):
+    def Up(self):
         return self.y
 
     @property
-    def Up(self):
+    def Down(self):
         return round(self.y + self.h, 15)    # Rounding because of floating point precision error causing bad collision detection
+
+    @property
+    def Center(self):
+        return self.x + self.w / 2, self.y + self.h / 2
 
     def collide_rect(self, rect):
         x, y, w, h = rect.Rect if isinstance(rect, Rect) else rect
-        return (self.x < x < self.Right or x < self.x < (x + w)) and (self.y < y < self.Up or y < self.y < (y + h))
+        Left, Right, Up, Down = x, x + w, y, y + h
+        
+        collide_x = self.x < x < self.Right or x < self.x < Right or self.x < Right < self.Right or x < self.Right < Right
+        collide_y = self.y < y < self.Down or y < self.y < Down or self.y < Down < self.Down or y < self.Down < Down
+
+        return collide_x and collide_y
 
     def collide_rects(self, rects):
         for i, rect in enumerate(rects):
