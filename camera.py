@@ -6,6 +6,10 @@ class Camera:
         self.x, self.y = 0, 0
         self.look_at(*start_pos or (0,0))
 
+    @property
+    def offset(self):
+        return -self.x, -self.y
+
     def move(self, x_offset, y_offset):
         self.x += x_offset
         self.y += y_offset

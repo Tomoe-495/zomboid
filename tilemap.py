@@ -56,11 +56,14 @@ class Tilemap:
         self.rects.clear()
         self.rects.extend(rects)
 
-    def draw(self, surface, player, world_to_screen_rect):
+    def draw(self, surface, player, camera):
         # for rect in self.rects:
         #     pg.draw.rect(surface, (0, 0, 0), world_to_screen_rect(rect))
-        surface.blit(self.layerBackground, (0, 0))
-        pg.draw.rect(surface, 0x00ff00, world_to_screen_rect(player.Rect), 2)
-        surface.blit(self.layerTiles, (0, 0))
-        surface.blit(self.layerTrees, (0, 0))
-        surface.blit(self.layerAssets, (0, 0))
+        
+        surface.blit(self.layerBackground, camera.offset)
+        
+        player.draw(surface, camera)
+        
+        surface.blit(self.layerTiles, camera.offset)
+        surface.blit(self.layerTrees, camera.offset)
+        surface.blit(self.layerAssets, camera.offset)
