@@ -54,8 +54,8 @@ def main():
 
 
         screen.fill(0)
-        tilemap.draw(screen, camera.world_to_screen_rect)
-        player.draw(screen, camera.world_to_screen_rect)
+        tilemap.draw(screen, player, camera.world_to_screen_rect)
+        #player.draw(screen, camera.world_to_screen_rect)
 
 
         pg.display.update()

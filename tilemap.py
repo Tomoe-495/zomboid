@@ -10,6 +10,8 @@ class Tilemap:
         self.rects.clear()
         self.rects.extend(rects)
 
-    def draw(self, surface, world_to_screen_rect):
+    def draw(self, surface, player, world_to_screen_rect):
         for rect in self.rects:
             pg.draw.rect(surface, 0xa0a0a0, world_to_screen_rect(rect))
+
+        pg.draw.rect(surface, 0x00ff00, world_to_screen_rect(player.Rect), 2)
