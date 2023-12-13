@@ -18,23 +18,20 @@ def main():
     screen = pg.display.set_mode(c.SCREEN_SIZE)
     clock = pg.time.Clock()
 
-    PIXELS_PER_UNIT = 64
-
     player = Player(
-        (0, 1, 0.7, 1.8),
+        (300, 300, 20, 50),
         c.PHYS_WALK_SPEED,
         c.PHYS_RUN_SPEED,
         c.PHYS_JUMP_POWER,
         c.PHYS_GRAVITY
     )
     
-    camera = Camera(c.SCREEN_SIZE, PIXELS_PER_UNIT)
+    camera = Camera(c.SCREEN_SIZE)
     
     tilemap = Tilemap([
-        (-1, -1, 2  , 0.3),
-        ( 1, -1, 0.1, 3),
-        (-3,  0, 1  , 0.1),
-        (-5, -3, 10 , 0.05)
+        (100, 400, 400,  50),
+        (500, 350, 200, 100),
+        (300, 300, 100,  10),
     ])
 
 
