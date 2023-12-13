@@ -77,10 +77,10 @@ class Player(Entity):
             
 
     def update(self, delta_time):
-        self.vel_y += self.gravity * delta_time
+        self.vel_y -= self.gravity * delta_time
 
         if self.jumping and self.grounded:
-            self.vel_y = self.jump_power
+            self.vel_y = -self.jump_power
 
         x_offset = self.vel_x * delta_time * self.Speed
         y_offset = self.vel_y * delta_time
@@ -89,10 +89,10 @@ class Player(Entity):
 
         self.grounded = False
         if collision.Collision:
-            if collision.CollideTop:
+            if collision.CollideBottom:
                 self.vel_y = 0
                 self.grounded = True
-            elif collision.CollideBottom:
+            elif collision.CollideTop:
                 self.vel_y = 0
 
     def collide_collision_map(self, x_offset, y_offset):
