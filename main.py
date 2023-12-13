@@ -17,6 +17,8 @@ def main():
 
     tilemap = Tilemap()
 
+    print(tilemap.player_pos)
+
     player = Player(
         (tilemap.player_pos[0], tilemap.player_pos[1], 20, 50),
         c.PHYS_WALK_SPEED,
@@ -49,7 +51,7 @@ def main():
         camera.look_at_centered(*player.Center)
 
         screen.fill((144, 244, 200))
-        tilemap.draw(screen, player, camera.world_to_screen_rect)
+        tilemap.draw(screen, player, camera)
         #player.draw(screen, camera.world_to_screen_rect)
 
 

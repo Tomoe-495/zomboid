@@ -58,6 +58,9 @@ class Player(Entity):
     def set_collisionmap(self, collision_map):
         self.collision_map = collision_map
 
+    def draw(self, surface, camera):
+        pg.draw.rect(surface, 0xff00ff, camera.world_to_screen_rect(self.Rect), 2)
+
     def handle_event(self, event):
         if event.type == pg.KEYDOWN:
             self.vel_x += (event.key == pg.K_d) - (event.key == pg.K_a)
