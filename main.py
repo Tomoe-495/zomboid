@@ -11,15 +11,12 @@ pg.init()
 
 
 
-
-
-
 def main():
     screen = pg.display.set_mode(c.SCREEN_SIZE)
     clock = pg.time.Clock()
 
     player = Player(
-        (300, 300, 20, 50),
+        (500, 200, 20, 50),
         c.PHYS_WALK_SPEED,
         c.PHYS_RUN_SPEED,
         c.PHYS_JUMP_POWER,
@@ -28,12 +25,7 @@ def main():
     
     camera = Camera(c.SCREEN_SIZE)
     
-    tilemap = Tilemap([
-        (100, 400, 400,  50),
-        (500, 350, 200, 100),
-        (300, 300, 100,  10),
-    ])
-
+    tilemap = Tilemap()
 
     player.set_collisionmap(tilemap)
 
@@ -47,14 +39,20 @@ def main():
             else:
                 player.handle_event(event)
 
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    pg.quit()
+                    return
+
         player.update(delta_time)
 
 
-        screen.fill(0)
+        screen.fill((144, 244, 200))
         tilemap.draw(screen, player, camera.world_to_screen_rect)
         #player.draw(screen, camera.world_to_screen_rect)
 
 
         pg.display.update()
 
-main()
+if __name__ == "__main__":
+    main()
