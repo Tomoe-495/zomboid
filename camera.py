@@ -14,6 +14,10 @@ class Camera:
         self.x = x
         self.y = y
 
+    def look_at_centered(self, x, y):
+        self.x = x - self.w // 2
+        self.y = y - self.h // 2
+
     def world_to_screen_rect(self, rect):
         x, y, w, h = rect
 

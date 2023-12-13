@@ -45,7 +45,7 @@ def main():
                     return
 
         player.update(delta_time)
-
+        camera.look_at_centered(*player.Center)
 
         screen.fill((144, 244, 200))
         tilemap.draw(screen, player, camera.world_to_screen_rect)
