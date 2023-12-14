@@ -16,6 +16,7 @@ def main():
     clock = pg.time.Clock()
 
     tilemap = Tilemap()
+    tilemap.scale_map(c.TILE_SCALE)
 
     print(tilemap.player_pos)
 

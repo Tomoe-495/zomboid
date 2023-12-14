@@ -28,6 +28,7 @@ def get_tile_layer(layer_instance, layer, csv_map, size, sprite):
 class Tilemap:
     def __init__(self):
         self.rects = []
+        self.scale = 1
 
         self.map = load_json("map/map.ldtk")
         layer_instance = self.map["levels"][0]["layerInstances"]
@@ -51,6 +52,23 @@ class Tilemap:
             if x == csv_map["__cWid"] * size:
                 y += size
                 x = 0
+
+    def scale_map(self, scale_factor):
+        self.scale = scale_factor
+        
+        self.layerTiles = pg.transform.scale_by(self.layerTiles, scale_factor)
+        self.layerAssets = pg.transform.scale_by(self.layerAssets, scale_factor)
+        self.layerTrees = pg.transform.scale_by(self.layerTrees, scale_factor)
+        self.layerBackground = pg.transform.scale_by(self.layerBackground, scale_factor)
+
+        px, py = self.player_pos
+        self.player_pos = px * scale_factor, py * scale_factor
+
+        for rect in self.rects:
+            rect.x *= scale_factor
+            rect.y *= scale_factor
+            rect.w *= scale_factor
+            rect.h *= scale_factor
 
     def set_data(self, rects):
         self.rects.clear()
