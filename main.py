@@ -16,7 +16,7 @@ def main():
     clock = pg.time.Clock()
 
     tilemap = Tilemap()
-    tilemap.scale_map(c.TILE_SCALE)
+    #tilemap.scale_map(c.TILE_SCALE)
 
     print(tilemap.player_pos)
 
@@ -28,7 +28,7 @@ def main():
         c.PHYS_GRAVITY
     )
     
-    camera = Camera(c.SCREEN_SIZE)
+    camera = Camera(c.RENDER_SIZE)
     
 
     player.set_collisionmap(tilemap)
@@ -40,21 +40,23 @@ def main():
             if event.type == pg.QUIT:
                 pg.quit()
                 return
-            else:
-                player.handle_event(event)
-
-            if event.type == pg.KEYDOWN:
+            elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     return
 
+            player.handle_event(event)
+
+            
+
         player.update(delta_time)
         camera.look_at_centered(*player.Center)
 
-        screen.fill((144, 244, 200))
-        tilemap.draw(screen, player, camera)
+        camera.Surface.fill((144, 244, 200))
+        tilemap.draw(camera.Surface, player, camera)
         #player.draw(screen, camera.world_to_screen_rect)
 
+        camera.draw(screen)
 
         pg.display.update()
 
