@@ -48,12 +48,17 @@ class Player(Entity):
         self.gravity = gravity
         self.sprinting = False
         self.jumping = False
+        self.jump_falling = False
 
         self.collision_map = None
 
     @property
     def Speed(self):
         return self.run_speed if self.sprinting else self.walk_speed
+
+    @property
+    def Falling(self):
+        return self.vel_y > 0 or self.jump_falling
 
     def set_collisionmap(self, collision_map):
         self.collision_map = collision_map
@@ -75,15 +80,23 @@ class Player(Entity):
 
             if event.key == pg.K_SPACE:
                 self.jumping = False
+                self.jump_falling = True
             elif event.key == pg.K_LSHIFT:
                 self.sprinting = False
             
 
     def update(self, delta_time):
-        self.vel_y -= self.gravity * delta_time
+        gravity = self.gravity * delta_time
+        if self.vel_y > 100 or self.jump_falling:
+            gravity *= 2
+
+        # Clamp Gravity Power
+        if self.vel_y > -1500:
+            self.vel_y = max(self.vel_y - gravity, -1500)
 
         if self.jumping and self.grounded:
             self.vel_y = -self.jump_power
+            self.jump_falling = False
 
         x_offset = self.vel_x * delta_time * self.Speed
         y_offset = self.vel_y * delta_time
